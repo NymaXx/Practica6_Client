@@ -43,17 +43,15 @@ public class MainActivity extends AppCompatActivity {
         new Thread(
                 () -> {
                     try {
-                        //Esta linea envia solicitud de conexion
+                        //envia solicitud de conexion
                         //En la seccion del host voy a poner la IP del servidor
                         //En el puerto, voy a poner el puerto en el que escucha el servidor
                         socket = new Socket("192.168.18.4", 5000);
 
 
                         //------------------------------------------//
-                        //Definiendo corriente de salida
                         OutputStream os = socket.getOutputStream();
 
-                        //Como necesitamos mandar String, entonces vamos a mandar  siguientes objetos
                         //Buffer = espacio para almacenar bytes temporalmente
                         OutputStreamWriter osw = new OutputStreamWriter(os);
 
@@ -72,16 +70,13 @@ public class MainActivity extends AppCompatActivity {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             isUP = false;
-                            //accionUp.setText("DOWN");
                             break;
 
                         case MotionEvent.ACTION_MOVE:
-                            //accionUp.setText("MOVE");
                             break;
 
                         case MotionEvent.ACTION_UP:
                             isUP = true;
-                            //accionUp.setText("UP");
                             break;
                     }
                     return true;
@@ -143,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
         actionCOLOR.setOnClickListener(
-                //Envía mensaje para cambiar el color
+                // para cambiar el color
                 (v) -> {
                     new Thread(
                             () -> {
@@ -158,6 +153,74 @@ public class MainActivity extends AppCompatActivity {
 
                     ).start();
                 });
+
+        //para subir
+        new Thread(
+                () -> {
+                    while (true) {
+                        while (isUP) {
+                        }
+                        try {
+                            Thread.sleep(300);
+                            writer.write("UP\n");
+                            writer.flush();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        ).start();
+
+        //para bajar
+        new Thread(
+                () -> {
+                    while (true) {
+                        while (isDOWN) {
+                        }
+                        try {
+                            Thread.sleep(300);
+                            writer.write("DOWN\n");
+                            writer.flush();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        ).start();
+
+        //para ir a la izquierda
+        new Thread(
+                () -> {
+                    while (true) {
+                        while (isLEFT) {
+                        }
+                        try {
+                            Thread.sleep(300);
+                            writer.write("LEFT\n");
+                            writer.flush();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        ).start();
+
+        //Para ir a la derecha
+        new Thread(
+                () -> {
+                    while (true) {
+                        while (isRIGHT) {
+                        }
+                        try {
+                            Thread.sleep(300);
+                            writer.write("RIGHT\n");
+                            writer.flush();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        ).start();
 
     }
 }
